@@ -1,0 +1,42 @@
+# максимально возможное количество грузов, затем их общую массу
+# n = 6
+# free_space = 700
+# sp = [100,185,120,160,140,300]
+
+file = open('26-39.txt')
+n, free_space = file.readline().split()
+n = int(n)
+free_space = int(free_space)
+sp = [int(i) for i in file.readlines()]
+
+sp.sort()
+perev = k = 0
+for i in sp:
+    if 180<=i<=200:
+        free_space -= i
+        perev +=i
+        k+=1
+        sp.remove(i)
+
+perevcurrent = perevmax = 0
+kmax = kcurrent = 0
+
+for i in range(len(sp)):
+    p = free_space
+    j = i
+    while p>0 and j<len(sp):
+        if p-sp[j]>=0:
+            kcurrent +=1
+            perevcurrent+=sp[j]
+            p-=sp[j]
+            j+=1
+        else:
+            break
+
+    if kcurrent >= kmax:
+        kmax = max(kcurrent, kmax)
+        perevmax = max(perevmax, perevcurrent)
+    kcurrent = 0
+    perevcurrent = 0
+
+print(perev+perevmax,  kmax+k)
